@@ -1,27 +1,22 @@
 #!/usr/bin/python3
-
-""" Function to find perimiter of an island """
+""" island_perimeter function """
 
 
 def island_perimeter(grid):
-    """
-    Input: List of Lists
-    Returns: Perimeter of the island
-    """
-    count = 0
-    row = len(grid)
-    col = len(grid[0]) if row else 0
+    """  returns the perimeter of the island described in grid """
 
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
+    def edges(matrix):
+        """ detect number of edges along horizontal direction """
+        count = 0
+        for row in matrix:
+            row = [0] + row + [0]
+            for i in range(1, len(row)):
+                count += row[i] != row[i-1]
+        return count
 
-            idx = [(i - 1, j), (i, j - 1), (i, j + 1), (i + 1, j)]
-            check = [1 if k[0] in range(row) and k[1] in range(col) else 0
-                     for k in idx]
+    tgrid = [[] for _ in range(len(grid[0]))]
+    for row in grid:
+        for i, item in enumerate(row):
+            tgrid[i].append(item)
 
-            if grid[i][j]:
-                count += sum([1 if not r or not grid[k[0]][k[1]] else 0
-                              for r, k in zip(check, idx)])
-
-    return (count)
-
+    return edges(grid) + edges(tgrid)
